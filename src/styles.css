@@ -58,26 +58,8 @@ select { border: 0; background: transparent; color: var(--ink); font-weight: 600
 .search-results p { margin: 0; padding: 22px; color: #6a7b77; }
 .source-note { display: flex; align-items: center; gap: 7px; margin: 15px 0 0; color: #74847f; font-size: 11px; }.source-note span { color: var(--orange); }
 
-.hero-visual { position: relative; justify-self: end; width: min(100%, 500px); aspect-ratio: 4 / 5; background: #0c4c3f; color: white; border-radius: 3px; overflow: hidden; box-shadow: 22px 24px 0 #d8e9df; }
-.hero-visual::before { content: ""; position: absolute; width: 220px; height: 220px; border: 70px solid rgba(255,255,255,.045); border-radius: 50%; right: -115px; top: -120px; }
-.rule-badge { position: absolute; z-index: 2; top: 38px; right: 35px; width: 76px; height: 61px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,.9); border-radius: 8px; background: var(--orange); line-height: 1; box-shadow: 0 5px 0 rgba(0,0,0,.12); }
-.rule-badge b { font-size: 9px; letter-spacing: .16em; }.rule-badge span { margin-top: 5px; font-size: 16px; font-weight: 800; letter-spacing: .04em; }
-.visual-copy { position: absolute; z-index: 2; left: 42px; top: 48px; max-width: 260px; }
-.visual-copy > span { color: #88c7b7; letter-spacing: .15em; font-size: 9px; font-weight: 700; }
-.visual-copy strong { display: block; margin-top: 16px; font-size: clamp(28px, 4vw, 47px); letter-spacing: -.05em; }.visual-copy p { max-width: 235px; color: #c6dfd8; line-height: 1.55; font-size: 13px; }
-.road-scene { position: absolute; left: 0; right: 0; bottom: 47px; height: 48%; background: #637a76; transform: skewY(-9deg); transform-origin: right; border-top: 16px solid #f6f0e4; overflow: hidden; }
-.road-scene::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0 49.5%, rgba(0,0,0,.08) 49.5% 50.5%, transparent 50.5%); }
-.road-edge { position: absolute; top: -10%; width: 5px; height: 120%; background: rgba(255,255,255,.82); }.edge-left { left: 7%; }.edge-right { right: 7%; }
-.centre-lines { position: absolute; z-index: 1; top: -10%; bottom: -10%; left: 50%; display: flex; gap: 7px; transform: translateX(-50%); }
-.centre-lines i { width: 4px; background: repeating-linear-gradient(180deg,#f7c84b 0 28px,transparent 28px 48px); }
-.lane-direction { position: absolute; z-index: 1; color: rgba(255,255,255,.68); font-size: 62px; font-weight: 300; line-height: 1; transform: skewY(9deg); }
-.direction-up { right: 24%; top: 43%; }.direction-down { left: 24%; top: 13%; }
-.car { position: absolute; z-index: 2; width: 34px; height: 58px; border-radius: 11px 11px 8px 8px; transform: skewY(9deg); box-shadow: inset 0 -11px rgba(0,0,0,.12); }
-.car::before { content: ""; position: absolute; left: 5px; right: 5px; top: 11px; height: 15px; border-radius: 5px 5px 2px 2px; background: rgba(255,255,255,.32); }
-.car i { position: absolute; width: 5px; height: 13px; background: #172e2a; border-radius: 3px; top: 30px; }.car i:first-child { left: -3px; }.car i:last-child { right: -3px; }
-.car-one { background: #f0713a; right: 29%; top: 14%; }.car-two { background: #d0ebdf; left: 29%; top: 54%; transform: skewY(9deg) rotate(180deg); }
-.visual-footer { position: absolute; bottom: 16px; left: 30px; right: 30px; display: flex; align-items: center; gap: 10px; font-size: 9px; letter-spacing: .12em; color: #9fc9bf; }
-.visual-footer div { height: 1px; background: rgba(255,255,255,.24); flex: 1; }.visual-footer div i { display: block; width: 17%; height: 1px; background: var(--orange); }
+.hero-visual { position: relative; justify-self: end; width: min(100%, 500px); aspect-ratio: 4 / 5; background: #dce5d8; border-radius: 3px; overflow: hidden; box-shadow: 22px 24px 0 #d8e9df; }
+.hero-visual img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 53%; }
 
 .emergency-strip { background: var(--orange); color: #fff; min-height: 86px; padding: 16px 7vw; display: flex; align-items: center; justify-content: center; gap: 4vw; }
 .emergency-strip > strong { display: flex; align-items: center; gap: 12px; font-size: 14px; white-space: nowrap; }.emergency-strip > strong > span { width: 27px; height: 27px; display: grid; place-items: center; border: 2px solid #fff; border-radius: 50%; }
@@ -144,7 +126,7 @@ footer { max-width: 1440px; min-height: 170px; margin: auto; padding: 42px 7vw; 
 
 @media (max-width: 680px) {
   .topbar { height: 70px; padding: 0 20px; }.brand { font-size: 15px; }.brand-mark { width: 25px; height: 25px; }.header-actions { gap: 4px; }.city-picker select { max-width: 94px; font-size: 11px; }
-  .hero { padding: 55px 20px 48px; gap: 45px; }.hero h1 { font-size: 46px; }.hero-lead { font-size: 15px; }.search-wrap kbd { display: none; }.search-wrap > input { padding-right: 18px; font-size: 13px; }.hero-visual { width: calc(100% - 18px); margin-right: 18px; box-shadow: 14px 15px 0 #d8e9df; }.visual-copy { left: 26px; top: 34px; }.rule-badge { right: 24px; top: 28px; transform: scale(.82); }.visual-copy strong { font-size: 34px; }.visual-copy p { max-width: 195px; }
+  .hero { padding: 55px 20px 48px; gap: 45px; }.hero h1 { font-size: 46px; }.hero-lead { font-size: 15px; }.search-wrap kbd { display: none; }.search-wrap > input { padding-right: 18px; font-size: 13px; }.hero-visual { width: calc(100% - 18px); margin-right: 18px; box-shadow: 14px 15px 0 #d8e9df; }
   .emergency-strip { padding: 20px; align-items: stretch; flex-direction: column; gap: 14px; }.emergency-strip > div { display: grid; grid-template-columns: 1fr; }.emergency-strip button { display: flex; justify-content: space-between; }
   .section-pad { padding: 76px 20px; }.essential-grid { grid-template-columns: 1fr; margin-top: 35px; }.essential-grid article { border-left: 1px solid var(--line); min-height: 230px; }.essential-grid article:last-child { border-bottom: 0; }
   .guide-section { padding: 76px 20px; }.chapter-list button { grid-template-columns: 26px 42px 1fr 18px; gap: 10px; }.chapter-symbol { width: 38px; height: 38px; }.chapter-copy b { font-size: 16px; }.chapter-copy small { font-size: 11px; line-height: 1.4; }

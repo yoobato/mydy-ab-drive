@@ -165,21 +165,10 @@ export default function App() {
           </div>
 
           <div className="hero-visual" aria-label={locale === "ko" ? "알버타 도로 안내 미리보기" : "Alberta road guide preview"}>
-            <div className="rule-badge"><b>KEEP</b><span>RIGHT</span></div>
-            <div className="visual-copy">
-              <span>{locale === "ko" ? "오늘의 핵심" : "QUICK RULE"}</span>
-              <strong>{locale === "ko" ? "우측통행" : "KEEP RIGHT"}</strong>
-              <p>{locale === "ko" ? "도로 오른쪽으로 주행하고, 회전 후 올바른 차로로 진입하세요." : "Keep to the right and enter the correct lane after every turn."}</p>
-            </div>
-            <div className="road-scene" aria-hidden="true">
-              <div className="road-edge edge-left" /><div className="road-edge edge-right" />
-              <div className="centre-lines"><i /><i /></div>
-              <div className="lane-direction direction-up">↑</div>
-              <div className="lane-direction direction-down">↓</div>
-              <div className="car car-one"><i /><i /></div>
-              <div className="car car-two"><i /><i /></div>
-            </div>
-            <div className="visual-footer"><span>VISUAL GUIDE</span><div><i /></div><span>2026</span></div>
+            <img
+              src="/alberta-driving-guide-hero.jpg"
+              alt={locale === "ko" ? "로키산맥과 알버타 도시를 잇는 도로를 달리는 자동차 일러스트" : "Illustration of cars travelling from the Rockies toward an Alberta city"}
+            />
           </div>
         </section>
 
