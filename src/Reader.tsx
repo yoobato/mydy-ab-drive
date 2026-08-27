@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { articles, guideItems, type CityId, type Locale } from "./content";
+import { articles, guideItems, type CityId, type Locale, type SourceKind } from "./content";
 
 type ReaderProps = {
   locale: Locale;
@@ -38,7 +38,14 @@ const visualLabels: Record<string, string> = {
   road: "KEEP RIGHT", speed: "50", mirror: "CHECK", stop: "STOP", signal: "● ● ●",
   sign: "△", intersection: "4 WAY", turn: "↰", uturn: "↶", parking: "5 m",
   hill: "P ↗", snow: "SNOW", merge: "⇢", ice: "ICE", plow: "PLOW",
-  bus: "20 m", siren: "60", collision: "!",
+  bus: "20 m", siren: "60", collision: "!", pedestrian: "WALK", roundabout: "↻",
+  highway: "PASS", skid: "ABS", visibility: "LOW", truck: "TRUCK", rail: "RAIL",
+  seatbelt: "CLICK", law: "LAW", heater: "−20°", insurance: "AB",
+};
+
+const sourceLabels: Record<Locale, Record<SourceKind, string>> = {
+  ko: { guide: "2026 Driver’s Guide", alberta: "Alberta 공식", municipal: "도시 규정", canada: "Canada 공식", practical: "실전 팁" },
+  en: { guide: "2026 Driver’s Guide", alberta: "Alberta official", municipal: "Municipal rule", canada: "Canada official", practical: "Practical tip" },
 };
 
 export default function Reader({ locale, city, articleId, onClose, onSelectArticle }: ReaderProps) {
@@ -46,6 +53,10 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
   const chapter = guideItems.find((item) => item.id === article.chapterId) ?? guideItems[0];
   const sameChapter = articles.filter((item) => item.chapterId === chapter.id);
   const t = labels[locale];
+  const sourceKinds = article.sourceKinds ?? (
+    article.sourceUrl?.includes("driver-guides-overview") ? ["guide"] :
+    article.sourceUrl?.includes("alberta.ca") ? ["alberta"] : ["practical"]
+  ) as SourceKind[];
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -62,7 +73,7 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
     <div className="reader-overlay" role="dialog" aria-modal="true" aria-label={article.title[locale]}>
       <header className="reader-topbar">
         <button className="reader-brand" onClick={onClose}>
-          <span className="brand-mark" aria-hidden="true"><i /></span>
+          <img className="brand-logo" src="/drivebook-logo.png" alt="" />
           <span>Drivebook <b>Alberta</b></span>
         </button>
         <span>{chapter.chapter} · {chapter.title[locale]}</span>
@@ -88,6 +99,9 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
 
         <main className="reader-main">
           <div className="reader-breadcrumb">{chapter.chapter} / {chapter.title[locale]}</div>
+          <div className="source-badges" aria-label={locale === "ko" ? "이 글의 출처" : "Sources for this article"}>
+            {sourceKinds.map((kind) => <span key={kind} className={`source-badge source-${kind}`}>{sourceLabels[locale][kind]}</span>)}
+          </div>
           <h1>{article.title[locale]}</h1>
           <p className="reader-summary">{article.summary[locale]}</p>
 
@@ -133,9 +147,11 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
             </div>
           </section>
 
-          <a className="source-link" href={article.sourceUrl} target="_blank" rel="noreferrer">
-            <span>↗</span><div><b>{t.source}</b><small>Government of Alberta · 2026</small></div>
-          </a>
+          {article.sourceUrl && (
+            <a className="source-link" href={article.sourceUrl} target="_blank" rel="noreferrer">
+              <span>↗</span><div><b>{t.source}</b><small>{sourceKinds.map((kind) => sourceLabels[locale][kind]).join(" · ")}</small></div>
+            </a>
+          )}
         </main>
 
         <aside className="reader-subnav">

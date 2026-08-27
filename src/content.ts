@@ -1,6 +1,9 @@
+import { expandedArticles } from "./expandedContent";
+
 export type Locale = "ko" | "en";
 export type Localized = Record<Locale, string>;
 export type CityId = "alberta" | "calgary" | "edmonton" | "red-deer";
+export type SourceKind = "guide" | "alberta" | "municipal" | "canada" | "practical";
 
 export type GuideItem = {
   id: string;
@@ -20,9 +23,10 @@ export type Article = {
   steps: Record<Locale, string[]>;
   caution: Localized;
   keywords: string[];
-  visual: "road" | "speed" | "mirror" | "stop" | "signal" | "sign" | "intersection" | "turn" | "uturn" | "parking" | "hill" | "snow" | "merge" | "ice" | "plow" | "bus" | "siren" | "collision";
+  visual: "road" | "speed" | "mirror" | "stop" | "signal" | "sign" | "intersection" | "turn" | "uturn" | "parking" | "hill" | "snow" | "merge" | "ice" | "plow" | "bus" | "siren" | "collision" | "pedestrian" | "roundabout" | "highway" | "skid" | "visibility" | "truck" | "rail" | "seatbelt" | "law" | "heater" | "insurance";
   cities?: Partial<Record<CityId, Localized>>;
   sourceUrl?: string;
+  sourceKinds?: SourceKind[];
 };
 
 export const guideItems: GuideItem[] = [
@@ -59,8 +63,26 @@ export const guideItems: GuideItem[] = [
   {
     id: "emergency", icon: "!", chapter: "06",
     title: { ko: "긴급상황", en: "Emergencies" },
-    description: { ko: "사이렌, 스쿨버스, 사고·고장과 견인 대응", en: "Sirens, school buses, collisions, breakdowns and towing" },
+    description: { ko: "사이렌, 사고·고장, 미끄러짐과 악천후 대응", en: "Sirens, collisions, breakdowns, skids and bad weather" },
     keywords: ["사고", "고장", "구급차", "경찰", "스쿨버스", "견인", "collision", "siren", "school bus"],
+  },
+  {
+    id: "road-users", icon: "◎", chapter: "07",
+    title: { ko: "함께 쓰는 도로", en: "Sharing the road" },
+    description: { ko: "보행자·자전거, 대형트럭, 철도와 LRT", en: "Pedestrians, cyclists, heavy trucks, railways and LRT" },
+    keywords: ["보행자", "자전거", "오토바이", "트럭", "철도", "lrt", "pedestrian", "cyclist", "truck"],
+  },
+  {
+    id: "law", icon: "§", chapter: "08",
+    title: { ko: "법규와 책임", en: "Law & responsibility" },
+    description: { ko: "안전벨트, 주의산만·음주운전과 벌점", en: "Restraints, distraction, impairment and demerits" },
+    keywords: ["법규", "카시트", "안전벨트", "휴대폰", "음주운전", "벌점", "law", "seat belt", "demerit"],
+  },
+  {
+    id: "appendix", icon: "+", chapter: "09",
+    title: { ko: "알버타 자동차 생활", en: "Alberta car life" },
+    description: { ko: "한국과 다른 미러, 블록히터, 차량 기능과 보험", en: "Mirrors, block heaters, vehicle features and insurance" },
+    keywords: ["사이드미러", "블록히터", "자동접이", "보험", "mirror", "block heater", "insurance"],
   },
 ];
 
@@ -93,7 +115,7 @@ export const articles: Article[] = [
       calgary: { ko: "Calgary는 표지판 없는 도로의 기본 제한속도가 40km/h입니다.", en: "Calgary's default limit on unsigned roads is 40 km/h." },
       "red-deer": { ko: "Red Deer는 별도 표지가 없으면 도시 기본 제한속도가 50km/h입니다.", en: "Red Deer's citywide default is 50 km/h unless posted otherwise." },
     },
-    keywords: ["속도", "제한속도", "40", "50", "km/h", "speed limit", "단위"], sourceUrl: guideSource,
+    keywords: ["속도", "제한속도", "40", "50", "km/h", "speed limit", "단위"], sourceUrl: guideSource, sourceKinds: ["guide", "municipal"],
   },
   {
     id: "shoulder-check", chapterId: "basics", visual: "mirror",
@@ -201,7 +223,7 @@ export const articles: Article[] = [
       en: ["Check whether the arrow applies to your parking position.", "Distinguish No Stopping from No Parking.", "Read the applicable days and start/end times.", "Check maximum stay, resident permit and payment requirements.", "Look again for temporary construction or snow-removal notices."],
     },
     caution: { ko: "도시 주차 조례는 표지판에 모두 적혀 있지 않을 수 있습니다. 장기·야간 주차는 도시 규칙도 확인하세요.", en: "Not every municipal parking rule appears on a sign. Check local rules for long-term or overnight parking." },
-    keywords: ["스트릿파킹", "스트리트 파킹", "주차표지판", "no parking", "no stopping", "paid parking"], sourceUrl: guideSource,
+    keywords: ["스트릿파킹", "스트리트 파킹", "주차표지판", "no parking", "no stopping", "paid parking"], sourceUrl: guideSource, sourceKinds: ["guide", "municipal", "practical"],
   },
   {
     id: "hill-snow-parking", chapterId: "parking", visual: "hill",
@@ -217,7 +239,7 @@ export const articles: Article[] = [
       calgary: { ko: "Calgary는 지정 Snow Route 주차금지가 발령되면 최대 72시간 이어질 수 있습니다.", en: "Calgary snow-route bans can remain in effect for up to 72 hours." },
       edmonton: { ko: "Edmonton은 주요도로 Phase 1과 주거지역 Phase 2로 나눠 운영합니다.", en: "Edmonton uses Phase 1 for major routes and Phase 2 for residential areas." },
     },
-    keywords: ["언덕주차", "바퀴", "제설", "snow route", "parking ban", "hill parking"], sourceUrl: guideSource,
+    keywords: ["언덕주차", "바퀴", "제설", "snow route", "parking ban", "hill parking"], sourceUrl: guideSource, sourceKinds: ["guide", "municipal"],
   },
   {
     id: "highway-merge", chapterId: "winter", visual: "merge",
@@ -318,9 +340,11 @@ export const articles: Article[] = [
       edmonton: { ko: "Edmonton은 일반 주차단속 견인은 311에 문의하고, 겨울 금지 견인은 Find Your Vehicle 조회를 제공합니다.", en: "For Edmonton parking-enforcement tows, contact 311; winter-ban tows also have a Find Your Vehicle lookup." },
       calgary: { ko: "Calgary의 주차단속·Snow Route 견인은 Calgary Parking에서 확인합니다.", en: "Check Calgary Parking for enforcement and snow-route tows." },
     },
-    keywords: ["견인", "토잉", "보관소", "impound", "towing", "towed", "tow truck"], sourceUrl: "https://www.alberta.ca/vehicle-towing-and-storage-regulation",
+    keywords: ["견인", "토잉", "보관소", "impound", "towing", "towed", "tow truck"], sourceUrl: "https://www.alberta.ca/vehicle-towing-and-storage-regulation", sourceKinds: ["alberta", "municipal", "practical"],
   },
 ];
+
+articles.push(...expandedArticles);
 
 export const quickTopics = [
   { articleId: "unprotected-left", ko: "비보호 좌회전", en: "Unprotected left turn" },
@@ -329,4 +353,7 @@ export const quickTopics = [
   { articleId: "school-bus", ko: "스쿨버스 빨간불", en: "School bus red lights" },
   { articleId: "emergency-vehicles", ko: "사이렌이 들릴 때", en: "When you hear a siren" },
   { articleId: "towing", ko: "차가 견인됐어요", en: "My car was towed" },
+  { articleId: "driver-side-mirror", ko: "운전석 미러가 낯설어요", en: "The driver's mirror feels odd" },
+  { articleId: "block-heater", ko: "블록히터 사용법", en: "Using a block heater" },
+  { articleId: "alberta-auto-insurance", ko: "알버타 자동차 보험", en: "Alberta auto insurance" },
 ];

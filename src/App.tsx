@@ -13,7 +13,7 @@ const copy = {
     search: "검색",
     noResult: "일치하는 가이드를 찾지 못했어요.",
     cityLabel: "운전 지역",
-    source: "2026 Alberta Driver's Guide 기반",
+    source: "2026 Alberta Driver's Guide 및 공식 자료 기반",
     emergency: "지금 도움이 필요하신가요?",
     emergencyItems: ["사고가 났어요", "차가 고장 났어요", "견인됐어요"],
     essentialsEyebrow: "START HERE",
@@ -45,7 +45,7 @@ const copy = {
     search: "Search",
     noResult: "We couldn't find a matching guide.",
     cityLabel: "Driving in",
-    source: "Based on the 2026 Alberta Driver's Guide",
+    source: "Based on the 2026 Alberta Driver's Guide and official sources",
     emergency: "Need help right now?",
     emergencyItems: ["I had a collision", "My car broke down", "My car was towed"],
     essentialsEyebrow: "START HERE",
@@ -113,7 +113,7 @@ export default function App() {
     <div className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Drivebook Alberta home">
-          <span className="brand-mark" aria-hidden="true"><i /></span>
+          <img className="brand-logo" src="/drivebook-logo.png" alt="" />
           <span>Drivebook <b>Alberta</b></span>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -202,7 +202,7 @@ export default function App() {
             <p className="eyebrow">{t.guideEyebrow}</p>
             <h2>{t.guideTitle}</h2>
             <p>{t.guideLead}</p>
-            <div className="chapter-progress"><span>6 {locale === "ko" ? "개 장" : "chapters"}</span><i /></div>
+            <div className="chapter-progress"><span>{guideItems.length} {locale === "ko" ? "개 장" : "chapters"}</span><i /></div>
           </div>
           <div className="chapter-list">
             {guideItems.map((item) => (
@@ -247,7 +247,7 @@ export default function App() {
       </main>
 
       <footer>
-        <div className="brand footer-brand"><span className="brand-mark"><i /></span><span>Drivebook <b>Alberta</b></span></div>
+        <div className="brand footer-brand"><img className="brand-logo" src="/drivebook-logo.png" alt="" /><span>Drivebook <b>Alberta</b></span></div>
         <div><p>{t.disclaimer}</p><p>{t.attribution}</p></div>
         <span>© 2026 Drivebook Alberta</span>
       </footer>
