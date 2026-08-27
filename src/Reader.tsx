@@ -55,6 +55,7 @@ const sourceOverrides: Record<string, DisplaySource[]> = {
     { kind: "municipal", agency: { ko: "City of Calgary", en: "City of Calgary" }, title: { ko: "Neighbourhood speed limits — 표지판 없는 도로 40km/h", en: "Neighbourhood speed limits — 40 km/h on unsigned roads" }, url: "https://www.calgary.ca/roads/safety/residential-speed-limits.html" },
   ],
   "street-parking-signs": [
+    guideSource,
     { kind: "alberta", agency: { ko: "Government of Alberta", en: "Government of Alberta" }, title: { ko: "Traffic sign catalogue — 표준 규제 표지", en: "Traffic sign catalogue — standard regulatory signs" }, url: "https://www.alberta.ca/traffic-sign-catalogue" },
     { kind: "municipal", agency: { ko: "City of Calgary", en: "City of Calgary" }, title: { ko: "Traffic Safety Tips — No Stopping·No Parking·특수 주차구역", en: "Traffic Safety Tips — No Stopping, No Parking and special zones" }, url: "https://www.calgary.ca/Transportation/Roads/Documents/Traffic/Traffic-safety-programs/Traffic-tips-booklet.pdf" },
     { kind: "municipal", agency: { ko: "Calgary Parking", en: "Calgary Parking" }, title: { ko: "On-street parking — ParkPlus·시간제한·적재구역", en: "On-street parking — ParkPlus, time limits and loading zones" }, url: "https://parking-prd.calgary.ca/find-parking/on-street.html" },
@@ -85,10 +86,10 @@ const sourceOverrides: Record<string, DisplaySource[]> = {
     { kind: "alberta", agency: { ko: "Government of Alberta", en: "Government of Alberta" }, title: { ko: "Impaired driving penalties", en: "Impaired driving penalties" }, url: "https://www.alberta.ca/impaired-driving-penalties" },
   ],
   "driver-side-mirror": [
-    { kind: "canada", agency: { ko: "Government of Canada · Justice Laws Website", en: "Government of Canada · Justice Laws Website" }, title: { ko: "Motor Vehicle Safety Regulations — 후사경 요건", en: "Motor Vehicle Safety Regulations — rear-view mirror requirements" }, url: "https://laws-lois.justice.gc.ca/eng/regulations/c.r.c.%2C_c._1038/FullText.html?wbdisable=true" },
+    { kind: "canada", agency: { ko: "Government of Canada", en: "Government of Canada" }, title: { ko: "Justice Laws Website · Motor Vehicle Safety Regulations — 후사경 요건", en: "Justice Laws Website · Motor Vehicle Safety Regulations — rear-view mirror requirements" }, url: "https://laws-lois.justice.gc.ca/eng/regulations/c.r.c.%2C_c._1038/FullText.html?wbdisable=true" },
   ],
   "block-heater": [
-    { kind: "alberta", agency: { ko: "Utilities Consumer Advocate · Government of Alberta", en: "Utilities Consumer Advocate · Government of Alberta" }, title: { ko: "에너지 절약 안내 — 블록히터 타이머 사용", en: "Energy-saving guidance — block-heater timer use" }, url: "https://ucahelps.alberta.ca/learning-hub/tips/tips-to-save-money-on-utility-bills/" },
+    { kind: "alberta", agency: { ko: "Government of Alberta", en: "Government of Alberta" }, title: { ko: "Utilities Consumer Advocate · 에너지 절약 안내 — 블록히터 타이머 사용", en: "Utilities Consumer Advocate · energy-saving guidance — block-heater timer use" }, url: "https://ucahelps.alberta.ca/learning-hub/tips/tips-to-save-money-on-utility-bills/" },
   ],
   "folding-mirrors": [
     { kind: "practical", agency: { ko: "차량별 확인 자료", en: "Vehicle-specific reference" }, title: { ko: "차량 소유자 설명서·트림별 장비 목록", en: "Owner’s manual and trim equipment list" } },
@@ -118,13 +119,93 @@ function sourcesFor(article: Article): DisplaySource[] {
   return [{ kind: "practical", agency: { ko: "참고 자료", en: "Reference" }, title: { ko: "원문 확인", en: "View source" }, url: article.sourceUrl }];
 }
 
+function BanSymbol({ stopping = false }: { stopping?: boolean }) {
+  return <span className={`ban-symbol ${stopping ? "ban-stopping" : "ban-parking"}`}><i>{stopping ? "" : "P"}</i></span>;
+}
+
+function SignArrows({ direction = "both" }: { direction?: "left" | "right" | "both" }) {
+  return <span className="sign-arrows"><i>{direction !== "right" ? "◀" : ""}</i><i>{direction !== "left" ? "▶" : ""}</i></span>;
+}
+
+function ParkingSignFace({ example }: { example: ParkingSignExample }) {
+  if (example.kind === "no-stopping") return (
+    <div className="parking-sign-face official-regulatory-sign">
+      <BanSymbol stopping />
+      <strong className="sign-time">7:00—9:00<br />16:00—18:00</strong>
+      <span className="sign-days"><i>◀</i> MON—FRI <i>▶</i></span>
+    </div>
+  );
+  if (example.kind === "no-parking") return (
+    <div className="parking-sign-face official-regulatory-sign">
+      <BanSymbol />
+      <strong className="sign-time">9:00—16:00</strong>
+      <span className="sign-days"><i>◀</i> MON—FRI <i>▶</i></span>
+    </div>
+  );
+  if (example.kind === "time-limit") return (
+    <div className="parking-sign-face official-regulatory-sign">
+      <span className="permit-symbol">P</span>
+      <strong className="sign-large-copy">30 min</strong>
+      <SignArrows />
+    </div>
+  );
+  if (example.kind === "arrows") return (
+    <div className="parking-sign-face direction-sign-set">
+      <span><BanSymbol /><SignArrows direction="right" /></span>
+      <span><BanSymbol /><SignArrows /></span>
+      <span><BanSymbol /><SignArrows direction="left" /></span>
+      <span><BanSymbol stopping /><SignArrows /></span>
+    </div>
+  );
+  if (example.kind === "paid") return (
+    <div className="parking-sign-face official-regulatory-sign paid-zone-sign">
+      <span className="paid-p">P</span>
+      <strong>PAY BY PLATE</strong>
+      <span>ZONE</span><b>2598</b>
+    </div>
+  );
+  if (example.kind === "loading") return (
+    <div className="parking-sign-face official-regulatory-sign loading-zone-sign">
+      <BanSymbol />
+      <span className="loading-symbol">LOADING<br />ZONE</span>
+      <strong>MAXIMUM<br />20 MINUTES</strong>
+      <SignArrows direction="right" />
+    </div>
+  );
+  if (example.kind === "permit") return (
+    <div className="parking-sign-face official-regulatory-sign permit-zone-sign">
+      <BanSymbol />
+      <SignArrows />
+      <strong>EXCEPT BY<br />PERMIT <i>D</i></strong>
+    </div>
+  );
+  if (example.kind === "accessible") return (
+    <div className="parking-sign-face blue-zone-sign accessible-zone-sign">
+      <span className="accessible-symbol">♿︎</span>
+      <strong>PERMIT REQUIRED</strong>
+      <span><i>◀</i> 8 m</span>
+    </div>
+  );
+  if (example.kind === "reserved") return (
+    <div className="parking-sign-face blue-zone-sign bus-zone-sign">
+      <span className="bus-symbol"><i /><i /></span>
+      <strong><i>◀</i> Bus Zone</strong>
+    </div>
+  );
+  return (
+    <div className="parking-sign-face snow-route-sign">
+      <span className="snow-route-head">❄<b>SNOW ROUTE</b></span>
+      <strong>WHEN DECLARED</strong>
+      <BanSymbol />
+      <span className="plow-symbol"><i /></span>
+    </div>
+  );
+}
+
 function ParkingSignCard({ example, locale }: { example: ParkingSignExample; locale: Locale }) {
   return (
     <article className="parking-sign-card">
-      <div className={`parking-sign-face parking-sign-${example.kind}`} aria-label={example.signText[locale]}>
-        <span className="parking-sign-symbol">{example.kind === "accessible" ? "♿" : example.kind === "snow-route" ? "✳" : "P"}</span>
-        <b>{example.signText[locale]}</b>
-      </div>
+      <div className={`parking-sign-visual parking-sign-${example.kind}`} role="img" aria-label={example.signText[locale]}><ParkingSignFace example={example} /></div>
       <div><h3>{example.title[locale]}</h3><p>{example.meaning[locale]}</p><small>{example.check[locale]}</small></div>
     </article>
   );
@@ -136,6 +217,13 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
   const sameChapter = articles.filter((item) => item.chapterId === chapter.id);
   const t = labels[locale];
   const sources = sourcesFor(article);
+  const sourceGroups = sources.reduce<Array<{ agency: string; kind: SourceKind; titles: string[] }>>((groups, source) => {
+    const agency = source.agency[locale];
+    const existing = groups.find((group) => group.agency === agency);
+    if (existing) existing.titles.push(source.title[locale]);
+    else groups.push({ agency, kind: source.kind, titles: [source.title[locale]] });
+    return groups;
+  }, []);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -183,7 +271,15 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
         <main className="reader-main">
           <div className="reader-breadcrumb">{chapter.chapter} / {chapter.title[locale]}</div>
           <div className="source-badges" aria-label={locale === "ko" ? "이 글의 출처" : "Sources for this article"}>
-            {sources.map((source) => <span key={`${source.agency.en}-${source.title.en}`} className={`source-badge source-${source.kind}`}>{source.agency[locale]} · {source.title[locale]}</span>)}
+            {sourceGroups.map((source, index) => {
+              const tooltipId = `source-tooltip-${article.id}-${index}`;
+              return (
+                <span key={source.agency} className={`source-badge source-${source.kind}`} tabIndex={0} aria-describedby={tooltipId}>
+                  {source.agency}
+                  <span className="source-tooltip" id={tooltipId} role="tooltip">{source.titles.map((title) => <span key={title}>{title}</span>)}</span>
+                </span>
+              );
+            })}
           </div>
           <h1>{article.title[locale]}</h1>
           <p className="reader-summary">{article.summary[locale]}</p>
