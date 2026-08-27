@@ -76,6 +76,8 @@ const cities = [
   { value: "red-deer", ko: "Red Deer", en: "Red Deer" },
 ];
 
+const navTargets = ["basics", "signs", "parking", "emergency"];
+
 export default function App() {
   const [locale, setLocale] = useState<Locale>("ko");
   const [city, setCity] = useState<CityId>("alberta");
@@ -117,7 +119,14 @@ export default function App() {
           <span>Drivebook <b>Alberta</b></span>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {t.nav.map((item) => <a key={item} href="#guide">{item}</a>)}
+          {t.nav.map((item, index) => (
+            <button
+              key={item}
+              onClick={() => setActiveArticleId(articles.find((article) => article.chapterId === navTargets[index])?.id ?? null)}
+            >
+              {item}
+            </button>
+          ))}
         </nav>
         <div className="header-actions">
           <label className="city-picker">

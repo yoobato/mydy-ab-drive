@@ -4,6 +4,15 @@ export type Locale = "ko" | "en";
 export type Localized = Record<Locale, string>;
 export type CityId = "alberta" | "calgary" | "edmonton" | "red-deer";
 export type SourceKind = "guide" | "alberta" | "municipal" | "canada" | "practical";
+export type ParkingSignKind = "no-stopping" | "no-parking" | "time-limit" | "arrows" | "paid" | "loading" | "permit" | "accessible" | "reserved" | "snow-route";
+
+export type ParkingSignExample = {
+  kind: ParkingSignKind;
+  signText: Localized;
+  title: Localized;
+  meaning: Localized;
+  check: Localized;
+};
 
 export type GuideItem = {
   id: string;
@@ -27,13 +36,14 @@ export type Article = {
   cities?: Partial<Record<CityId, Localized>>;
   sourceUrl?: string;
   sourceKinds?: SourceKind[];
+  parkingSigns?: ParkingSignExample[];
 };
 
 export const guideItems: GuideItem[] = [
   {
     id: "basics", icon: "→", chapter: "01",
     title: { ko: "운전 시작하기", en: "Getting started" },
-    description: { ko: "우측통행, km/h, 차량 조작과 출발 전 확인", en: "Right-side traffic, km/h, controls and pre-drive checks" },
+    description: { ko: "우측통행, km/h와 도시별 기본 제한속도", en: "Right-side traffic, km/h and municipal default limits" },
     keywords: ["우측통행", "좌핸들", "km/h", "기본", "right side", "left hand drive"],
   },
   {
@@ -56,20 +66,20 @@ export const guideItems: GuideItem[] = [
   },
   {
     id: "winter", icon: "✳", chapter: "05",
-    title: { ko: "겨울과 고속도로", en: "Winter & highways" },
-    description: { ko: "블랙아이스, 눈길 제동, 합류와 제설차", en: "Black ice, snow braking, merging and snowplows" },
-    keywords: ["겨울", "블랙아이스", "눈", "고속도로", "합류", "winter", "merge", "snow"],
+    title: { ko: "고속도로·제설 규칙", en: "Highway & snow rules" },
+    description: { ko: "차로 사용, 갓길 금지와 제설차 추월 규정", en: "Lane use, shoulder prohibitions and snowplow passing rules" },
+    keywords: ["고속도로", "추월", "갓길", "제설차", "highway", "passing", "shoulder", "snowplow"],
   },
   {
     id: "emergency", icon: "!", chapter: "06",
     title: { ko: "긴급상황", en: "Emergencies" },
-    description: { ko: "사이렌, 사고·고장, 미끄러짐과 악천후 대응", en: "Sirens, collisions, breakdowns, skids and bad weather" },
+    description: { ko: "스쿨버스·사이렌, 사고·고장과 견인 의무", en: "School buses, sirens, collisions, breakdowns and towing duties" },
     keywords: ["사고", "고장", "구급차", "경찰", "스쿨버스", "견인", "collision", "siren", "school bus"],
   },
   {
     id: "road-users", icon: "◎", chapter: "07",
     title: { ko: "함께 쓰는 도로", en: "Sharing the road" },
-    description: { ko: "보행자·자전거, 대형트럭, 철도와 LRT", en: "Pedestrians, cyclists, heavy trucks, railways and LRT" },
+    description: { ko: "보행자·자전거·오토바이 우선권과 철도·LRT", en: "Right-of-way for vulnerable users, railways and LRT" },
     keywords: ["보행자", "자전거", "오토바이", "트럭", "철도", "lrt", "pedestrian", "cyclist", "truck"],
   },
   {
@@ -215,15 +225,77 @@ export const articles: Article[] = [
   },
   {
     id: "street-parking-signs", chapterId: "parking", visual: "sign",
-    title: { ko: "스트리트 파킹 표지판 읽기", en: "Reading street-parking signs" },
-    summary: { ko: "한 기둥에 표지가 여러 개 있으면 화살표 → 금지 종류 → 요일 → 시간 → 허가 조건 순으로 읽습니다.", en: "When signs are stacked, read direction → restriction → day → time → permit conditions." },
-    takeaway: { ko: "결제했다고 주차가 모두 허용되는 것은 아닙니다. 다른 시간제 금지 표지도 함께 적용됩니다.", en: "Payment alone does not make parking legal; other timed restrictions still apply." },
+    title: { ko: "주차 표지판 완전 해석", en: "Decoding parking signs" },
+    summary: { ko: "No Stopping과 No Parking부터 시간·요일·화살표, 유료·허가·적재·장애인·버스·택시·제설 표지까지 종류별로 읽습니다.", en: "Decode No Stopping and No Parking plus times, days, arrows, payment, permits, loading, accessible, reserved and snow-route signs." },
+    takeaway: { ko: "기둥에서 내 차 방향의 화살표를 찾은 뒤, 가장 강한 금지 → 시간·요일 → 예외·허가 → 결제 순서로 읽으세요.", en: "Start with the arrow toward your car, then read strongest prohibition → time/day → exceptions/permits → payment." },
     steps: {
       ko: ["화살표가 내 주차 위치를 가리키는지 확인합니다.", "No Stopping인지 No Parking인지 구분합니다.", "적용 요일과 시작·종료 시간을 확인합니다.", "최대 주차시간, 주민 허가증, 유료 여부를 확인합니다.", "임시 공사표지와 제설 알림이 없는지 주변을 한 번 더 봅니다."],
       en: ["Check whether the arrow applies to your parking position.", "Distinguish No Stopping from No Parking.", "Read the applicable days and start/end times.", "Check maximum stay, resident permit and payment requirements.", "Look again for temporary construction or snow-removal notices."],
     },
     caution: { ko: "도시 주차 조례는 표지판에 모두 적혀 있지 않을 수 있습니다. 장기·야간 주차는 도시 규칙도 확인하세요.", en: "Not every municipal parking rule appears on a sign. Check local rules for long-term or overnight parking." },
-    keywords: ["스트릿파킹", "스트리트 파킹", "주차표지판", "no parking", "no stopping", "paid parking"], sourceUrl: guideSource, sourceKinds: ["guide", "municipal", "practical"],
+    parkingSigns: [
+      {
+        kind: "no-stopping", signText: { ko: "NO STOPPING", en: "NO STOPPING" },
+        title: { ko: "정차 금지", en: "No Stopping" },
+        meaning: { ko: "교통 흐름이나 긴급상황 때문에 멈추는 경우 외에는 승하차를 위해 잠깐도 세울 수 없습니다.", en: "Except for traffic or an emergency, you may not stop even briefly to pick up or drop off." },
+        check: { ko: "비상등을 켜도 예외가 되지 않습니다.", en: "Hazard lights do not create an exception." },
+      },
+      {
+        kind: "no-parking", signText: { ko: "NO PARKING", en: "NO PARKING" },
+        title: { ko: "주차 금지", en: "No Parking" },
+        meaning: { ko: "Calgary 표준 안내 기준으로 승객을 적극적으로 태우거나 내리는 동안만 정차할 수 있고, 그 외 이유로 차를 세워두거나 떠날 수 없습니다.", en: "Under Calgary's standard guidance, you may stop only while actively loading or unloading passengers and may not leave the vehicle stopped for another reason." },
+        check: { ko: "물건 적재 허용 여부는 별도 Loading Zone 표지를 확인합니다.", en: "Check for a separate Loading Zone sign before loading goods." },
+      },
+      {
+        kind: "time-limit", signText: { ko: "2 HR · 08–18 · MON–SAT", en: "2 HR · 08–18 · MON–SAT" },
+        title: { ko: "시간·요일·최대 체류", en: "Time, day and maximum stay" },
+        meaning: { ko: "표시된 요일과 시간대에만 제한이 적용되며, 2 HR 같은 숫자는 최대 주차시간입니다.", en: "The restriction applies on the posted days and hours; a value such as 2 HR is the maximum stay." },
+        check: { ko: "자정을 넘는 시간대와 공휴일 예외 문구도 확인합니다.", en: "Watch for overnight ranges and holiday exceptions." },
+      },
+      {
+        kind: "arrows", signText: { ko: "←  →", en: "←  →" },
+        title: { ko: "적용 방향", en: "Direction arrows" },
+        meaning: { ko: "왼쪽·오른쪽 화살표는 표지 기둥에서 그 방향 구간에 적용됩니다. 양방향 화살표면 양쪽 모두입니다.", en: "A left or right arrow applies from the signpost in that direction; two arrows apply on both sides." },
+        check: { ko: "내 차 앞뒤의 다음 표지판까지 같은 제한이 이어질 수 있습니다.", en: "The same restriction may continue until the next sign in that direction." },
+      },
+      {
+        kind: "paid", signText: { ko: "P · ZONE 2598", en: "P · ZONE 2598" },
+        title: { ko: "유료·번호 등록", en: "Paid or plate-registered parking" },
+        meaning: { ko: "표지의 Zone 번호와 차량 번호판으로 결제 또는 무료 등록을 시작합니다.", en: "Use the posted zone number and your licence plate to pay or start a required free registration." },
+        check: { ko: "결제했어도 No Stopping, 시간 제한과 허가 조건은 그대로 적용됩니다.", en: "Payment does not override No Stopping, time limits or permit restrictions." },
+      },
+      {
+        kind: "loading", signText: { ko: "LOADING · 20 MIN", en: "LOADING · 20 MIN" },
+        title: { ko: "승객·물품 적재구역", en: "Passenger or loading zone" },
+        meaning: { ko: "표지에 허용된 대상만 적극적으로 승하차·적재하는 동안 사용할 수 있으며 최대시간을 넘길 수 없습니다.", en: "Only the posted users may actively load or unload, and the posted maximum cannot be exceeded." },
+        check: { ko: "Public, Passenger, Commercial처럼 대상이 서로 다릅니다.", en: "Public, Passenger and Commercial zones serve different users." },
+      },
+      {
+        kind: "permit", signText: { ko: "EXCEPT BY PERMIT", en: "EXCEPT BY PERMIT" },
+        title: { ko: "거주자·구역 허가", en: "Residential or zone permit" },
+        meaning: { ko: "표시된 시간에는 해당 구역의 유효한 허가 차량만 주차할 수 있습니다.", en: "During posted hours, only vehicles with the valid permit for that zone may park." },
+        check: { ko: "방문자 허가도 구역 문자·번호와 유효시간이 맞아야 합니다.", en: "Visitor permits must match the zone and valid period." },
+      },
+      {
+        kind: "accessible", signText: { ko: "ACCESSIBLE", en: "ACCESSIBLE" },
+        title: { ko: "장애인 전용", en: "Accessible parking" },
+        meaning: { ko: "유효한 장애인 주차 표지판 또는 번호판을 표시한 차량만 이용할 수 있습니다.", en: "Only a vehicle displaying a valid accessible placard or plate may use the space." },
+        check: { ko: "사선 접근통로도 주차공간의 일부이므로 침범하면 안 됩니다.", en: "The striped access aisle is part of the space and must remain clear." },
+      },
+      {
+        kind: "reserved", signText: { ko: "BUS · TAXI · FIRE", en: "BUS · TAXI · FIRE" },
+        title: { ko: "버스·택시·소방 전용", en: "Bus, taxi and fire zones" },
+        meaning: { ko: "표지에 적힌 허가 차량 외에는 정차하거나 주차할 수 없습니다.", en: "Vehicles other than the class named on the sign may not stop or park." },
+        check: { ko: "승객을 잠깐 내리는 목적도 허용되지 않을 수 있습니다.", en: "Even a quick passenger drop-off may be prohibited." },
+      },
+      {
+        kind: "snow-route", signText: { ko: "SNOW ROUTE · WHEN DECLARED", en: "SNOW ROUTE · WHEN DECLARED" },
+        title: { ko: "제설·임시 주차금지", en: "Snow route or temporary ban" },
+        meaning: { ko: "도시가 금지를 발령했거나 임시 표지에 적힌 날짜·시간이 되면 평소 주차 가능 구간도 비워야 합니다.", en: "When the city declares a ban or a temporary sign's date begins, an otherwise legal space must be cleared." },
+        check: { ko: "도로가 한 번 제설됐어도 도시가 해제를 발표하기 전에는 돌아오지 않습니다.", en: "Do not return merely because the road was plowed once; wait until the city lifts the ban." },
+      },
+    ],
+    keywords: ["스트릿파킹", "스트리트 파킹", "주차표지판", "정차금지", "적재구역", "permit", "no parking", "no stopping", "paid parking"], sourceUrl: guideSource, sourceKinds: ["guide", "municipal"],
   },
   {
     id: "hill-snow-parking", chapterId: "parking", visual: "hill",
@@ -275,7 +347,7 @@ export const articles: Article[] = [
       en: ["Follow the minimum distance shown on the vehicle.", "Drop farther back when the snow cloud obscures your view.", "Consider passing only with legal markings and a fully clear opposing view.", "Expect another driver may be passing an oncoming snowplow in your lane."],
     },
     caution: { ko: "시야가 가려졌거나 제설 작업을 방해하거나 안전하게 완료할 수 없다면 추월은 금지됩니다.", en: "Passing is prohibited when visibility is obstructed, operations would be impeded or it cannot be completed safely." },
-    keywords: ["제설차", "snowplow", "추월", "눈구름", "snow plow"], sourceUrl: guideSource,
+    keywords: ["제설차", "snowplow", "추월", "눈구름", "snow plow"], sourceUrl: "https://www.alberta.ca/driving-safely-around-snowplows", sourceKinds: ["alberta"],
   },
   {
     id: "school-bus", chapterId: "emergency", visual: "bus",
@@ -345,6 +417,21 @@ export const articles: Article[] = [
 ];
 
 articles.push(...expandedArticles);
+
+// Keep the public guide focused on enforceable rules, legal duties and Alberta-specific systems.
+const generalDrivingAdvice = new Set([
+  "shoulder-check",
+  "highway-merge",
+  "black-ice",
+  "emergency-braking-skids",
+  "visibility-hydroplaning",
+  "emergency-kit-animals",
+  "heavy-log-trucks",
+]);
+
+for (let index = articles.length - 1; index >= 0; index -= 1) {
+  if (generalDrivingAdvice.has(articles[index].id)) articles.splice(index, 1);
+}
 
 export const quickTopics = [
   { articleId: "unprotected-left", ko: "비보호 좌회전", en: "Unprotected left turn" },
