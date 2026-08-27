@@ -80,9 +80,9 @@ export const guideItems: GuideItem[] = [
   },
   {
     id: "appendix", icon: "+", chapter: "09",
-    title: { ko: "알버타 자동차 생활", en: "Alberta car life" },
-    description: { ko: "한국과 다른 미러, 블록히터, 차량 기능과 보험", en: "Mirrors, block heaters, vehicle features and insurance" },
-    keywords: ["사이드미러", "블록히터", "자동접이", "보험", "mirror", "block heater", "insurance"],
+    title: { ko: "한국 운전자 부록", en: "Korean driver appendix" },
+    description: { ko: "한국과 다른 도로 문화, 미러, 겨울 차량 생활과 보험", en: "Road culture, mirrors, winter car life and insurance for Korean drivers" },
+    keywords: ["한국 차이", "사이드미러", "블록히터", "자동접이", "보험", "korea", "mirror", "block heater", "insurance"],
   },
 ];
 

@@ -214,6 +214,18 @@ export const expandedArticles: Article[] = [
     keywords: ["음주운전", "약물", "벌점", "면허정지", "impaired", "demerit", "suspension", "gdl"], sourceUrl: IMPAIRED_URL, sourceKinds: ["guide", "alberta"],
   },
   {
+    id: "korea-vs-alberta", chapterId: "appendix", visual: "road",
+    title: { ko: "한국 운전자라면 먼저 달라지는 것", en: "What feels different from driving in Korea" },
+    summary: { ko: "우측통행·좌핸들·km/h는 익숙하지만, 완전 정지 문화와 스쿨버스, 독특한 신호, 넓은 차로와 긴 겨울은 새로운 습관을 요구합니다.", en: "Right-side traffic, left-hand-drive cars and km/h feel familiar, but complete stops, school buses, distinctive signals, wide roads and long winters require new habits." },
+    takeaway: { ko: "차량 방향보다 ‘정지·양보를 눈에 보이게 하고, 겨울에는 훨씬 일찍 준비한다’는 차이가 더 큽니다.", en: "The biggest adjustment is not the side of the road: make every stop and yield obvious, and prepare much earlier for winter." },
+    steps: {
+      ko: ["STOP에서는 바퀴를 완전히 멈추고 4-way stop의 도착 순서를 확인합니다.", "빨간불 우회전·점멸 초록·스쿨버스 빨간불처럼 알버타 특유의 상황을 따로 익힙니다.", "운전석 평면 미러의 좁은 화각을 숄더 체크로 보완합니다.", "첫눈 전에 겨울타이어·워셔액·배터리와 블록히터 장착 여부를 확인합니다."],
+      en: ["Bring the wheels to a complete stop and track arrival order at a 4-way stop.", "Learn Alberta-specific situations such as right on red, flashing green and school-bus red lights.", "Compensate for the narrower driver-side mirror with a shoulder check.", "Before the first snow, check winter tires, washer fluid, the battery and whether a block heater is fitted."],
+    },
+    caution: { ko: "도시별 기본속도·주차·제설 규정은 달라질 수 있습니다. 알버타 공통 원칙을 익힌 뒤 현재 도시 표지판과 공지를 다시 확인하세요.", en: "Default speeds, parking and snow rules can vary by city. Learn the Alberta-wide rules, then check local signs and notices." },
+    keywords: ["한국 운전 차이", "캐나다 운전", "4-way stop", "스쿨버스", "겨울운전", "korea driving difference", "alberta"], sourceUrl: GUIDE_URL, sourceKinds: ["guide", "canada", "practical"],
+  },
+  {
     id: "driver-side-mirror", chapterId: "appendix", visual: "mirror",
     title: { ko: "한국과 다른 운전석 사이드미러", en: "Why the driver's mirror feels different" },
     summary: { ko: "캐나다 차량의 운전석 미러는 보통 평면에 가까워 한국의 넓은 화각 미러보다 물체가 크게 보이고 시야가 좁게 느껴질 수 있습니다.", en: "A Canadian driver's-side mirror is generally unit-magnification, so it can look larger and narrower than the wide-angle mirrors familiar in Korea." },

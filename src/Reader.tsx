@@ -34,15 +34,6 @@ const labels = {
   },
 };
 
-const visualLabels: Record<string, string> = {
-  road: "KEEP RIGHT", speed: "50", mirror: "CHECK", stop: "STOP", signal: "● ● ●",
-  sign: "△", intersection: "4 WAY", turn: "↰", uturn: "↶", parking: "5 m",
-  hill: "P ↗", snow: "SNOW", merge: "⇢", ice: "ICE", plow: "PLOW",
-  bus: "20 m", siren: "60", collision: "!", pedestrian: "WALK", roundabout: "↻",
-  highway: "PASS", skid: "ABS", visibility: "LOW", truck: "TRUCK", rail: "RAIL",
-  seatbelt: "CLICK", law: "LAW", heater: "−20°", insurance: "AB",
-};
-
 const sourceLabels: Record<Locale, Record<SourceKind, string>> = {
   ko: { guide: "2026 Driver’s Guide", alberta: "Alberta 공식", municipal: "도시 규정", canada: "Canada 공식", practical: "실전 팁" },
   en: { guide: "2026 Driver’s Guide", alberta: "Alberta official", municipal: "Municipal rule", canada: "Canada official", practical: "Practical tip" },
@@ -105,12 +96,14 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
           <h1>{article.title[locale]}</h1>
           <p className="reader-summary">{article.summary[locale]}</p>
 
-          <div className={`article-visual visual-${article.visual}`} aria-hidden="true">
-            <div className="visual-grid"><i /><i /><i /></div>
-            <strong>{visualLabels[article.visual]}</strong>
-            <span>{chapter.title[locale]}</span>
-            <div className="visual-path"><i /><i /></div>
-          </div>
+          <figure className="article-visual">
+            <img
+              src={`/guide-illustrations/${article.id}.jpg`}
+              alt={`${article.title[locale]} — ${locale === "ko" ? "상황 일러스트" : "scenario illustration"}`}
+              loading="eager"
+            />
+            <figcaption>{chapter.title[locale]}</figcaption>
+          </figure>
 
           <section className="takeaway-box">
             <span>{t.takeaway}</span>
