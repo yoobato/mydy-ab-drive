@@ -114,9 +114,9 @@ export default function App() {
   return (
     <div className="site-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Drivebook Alberta home">
+        <a className="brand" href="#top" aria-label="Drive in Alberta home">
           <img className="brand-logo" src="/drivebook-logo.png" alt="" />
-          <span>Drivebook <b>Alberta</b></span>
+          <span>Drive in <b>Alberta</b></span>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {t.nav.map((item, index) => (
@@ -256,9 +256,9 @@ export default function App() {
       </main>
 
       <footer>
-        <div className="brand footer-brand"><img className="brand-logo" src="/drivebook-logo.png" alt="" /><span>Drivebook <b>Alberta</b></span></div>
+        <div className="brand footer-brand"><img className="brand-logo" src="/drivebook-logo.png" alt="" /><span>Drive in <b>Alberta</b></span></div>
         <div><p>{t.disclaimer}</p><p>{t.attribution}</p></div>
-        <span>© 2026 Drivebook Alberta</span>
+        <span>© 2026 Drive in Alberta</span>
       </footer>
       {activeArticleId && (
         <Reader

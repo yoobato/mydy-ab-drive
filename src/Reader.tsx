@@ -157,7 +157,7 @@ export default function Reader({ locale, city, articleId, onClose, onSelectArtic
       <header className="reader-topbar">
         <button className="reader-brand" onClick={onClose}>
           <img className="brand-logo" src="/drivebook-logo.png" alt="" />
-          <span>Drivebook <b>Alberta</b></span>
+          <span>Drive in <b>Alberta</b></span>
         </button>
         <span>{chapter.chapter} · {chapter.title[locale]}</span>
         <button className="reader-close" onClick={onClose} aria-label={t.close}>×</button>
