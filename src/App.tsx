@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { guideItems, quickTopics, type Locale } from "./content";
+import Reader from "./Reader";
+import { articles, guideItems, quickTopics, type CityId, type Locale } from "./content";
 
 const copy = {
   ko: {
@@ -77,16 +78,16 @@ const cities = [
 
 export default function App() {
   const [locale, setLocale] = useState<Locale>("ko");
-  const [city, setCity] = useState("alberta");
+  const [city, setCity] = useState<CityId>("alberta");
   const [query, setQuery] = useState("");
-  const [notice, setNotice] = useState("");
+  const [activeArticleId, setActiveArticleId] = useState<string | null>(null);
   const t = copy[locale];
 
   const results = useMemo(() => {
     const term = query.trim().toLocaleLowerCase();
     if (!term) return [];
-    return guideItems.filter((item) => {
-      const searchable = [item.title.ko, item.title.en, item.description.ko, item.description.en, ...item.keywords]
+    return articles.filter((item) => {
+      const searchable = [item.title.ko, item.title.en, item.summary.ko, item.summary.en, ...item.keywords]
         .join(" ")
         .toLocaleLowerCase();
       return searchable.includes(term) || item.keywords.some((keyword) => term.includes(keyword.toLocaleLowerCase()));
@@ -104,16 +105,9 @@ export default function App() {
     return () => window.removeEventListener("keydown", focusSearch);
   }, []);
 
-  const announce = (message: string) => {
-    setNotice(message);
-    window.setTimeout(() => setNotice(""), 2200);
-  };
-
-  const searchTopic = (topic: string) => {
-    setQuery(topic);
-    document.getElementById("main-search")?.focus();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   return (
     <div className="site-shell">
@@ -128,7 +122,7 @@ export default function App() {
         <div className="header-actions">
           <label className="city-picker">
             <span>{t.cityLabel}</span>
-            <select value={city} onChange={(event) => setCity(event.target.value)}>
+            <select value={city} onChange={(event) => setCity(event.target.value as CityId)}>
               {cities.map((item) => <option key={item.value} value={item.value}>{item[locale]}</option>)}
             </select>
           </label>
@@ -158,9 +152,9 @@ export default function App() {
               {query && (
                 <div className="search-results" role="listbox">
                   {results.length ? results.map((item) => (
-                    <button key={item.id} onClick={() => announce(t.soon)}>
-                      <span className="result-icon">{item.icon}</span>
-                      <span><b>{item.title[locale]}</b><small>{item.description[locale]}</small></span>
+                    <button key={item.id} onClick={() => { setActiveArticleId(item.id); setQuery(""); }}>
+                      <span className="result-icon">→</span>
+                      <span><b>{item.title[locale]}</b><small>{item.summary[locale]}</small></span>
                       <i>→</i>
                     </button>
                   )) : <p>{t.noResult}</p>}
@@ -190,7 +184,10 @@ export default function App() {
         <section className="emergency-strip" aria-label={t.emergency}>
           <strong><span>!</span>{t.emergency}</strong>
           <div>
-            {t.emergencyItems.map((item) => <button key={item} onClick={() => searchTopic(item)}>{item}<span>↗</span></button>)}
+            {t.emergencyItems.map((item, index) => {
+              const articleIds = ["collision", "breakdown", "towing"];
+              return <button key={item} onClick={() => setActiveArticleId(articleIds[index])}>{item}<span>↗</span></button>;
+            })}
           </div>
         </section>
 
@@ -218,7 +215,7 @@ export default function App() {
           </div>
           <div className="chapter-list">
             {guideItems.map((item) => (
-              <button key={item.id} onClick={() => announce(t.soon)}>
+              <button key={item.id} onClick={() => setActiveArticleId(articles.find((article) => article.chapterId === item.id)?.id ?? null)}>
                 <span className="chapter-number">{item.chapter}</span>
                 <span className="chapter-symbol">{item.icon}</span>
                 <span className="chapter-copy"><b>{item.title[locale]}</b><small>{item.description[locale]}</small></span>
@@ -232,7 +229,7 @@ export default function App() {
           <div className="section-heading"><p className="eyebrow">QUICK FIND</p><h2>{t.popular}</h2></div>
           <div className="topic-cloud">
             {quickTopics.map((topic, index) => (
-              <button key={topic.ko} className={index === 2 || index === 4 ? "accent" : ""} onClick={() => searchTopic(topic[locale])}>
+              <button key={topic.ko} className={index === 2 || index === 4 ? "accent" : ""} onClick={() => setActiveArticleId(topic.articleId)}>
                 {topic[locale]}<span>↗</span>
               </button>
             ))}
@@ -250,7 +247,7 @@ export default function App() {
             </div>
             <label>
               <span>{t.cityLabel}</span>
-              <select value={city} onChange={(event) => setCity(event.target.value)}>
+              <select value={city} onChange={(event) => setCity(event.target.value as CityId)}>
                 {cities.map((item) => <option key={item.value} value={item.value}>{item[locale]}</option>)}
               </select>
             </label>
@@ -263,7 +260,15 @@ export default function App() {
         <div><p>{t.disclaimer}</p><p>{t.attribution}</p></div>
         <span>© 2026 Drivebook Alberta</span>
       </footer>
-      {notice && <div className="toast" role="status">{notice}</div>}
+      {activeArticleId && (
+        <Reader
+          locale={locale}
+          city={city}
+          articleId={activeArticleId}
+          onClose={() => setActiveArticleId(null)}
+          onSelectArticle={setActiveArticleId}
+        />
+      )}
     </div>
   );
 }
