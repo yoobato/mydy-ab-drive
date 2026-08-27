@@ -177,7 +177,7 @@ export default function App() {
               <div className="car car-two"><i /><i /></div>
               <div className="direction-arrow">↑</div>
             </div>
-            <div className="visual-footer"><span>01 / 06</span><div><i /></div><span>2026</span></div>
+            <div className="visual-footer"><span>VISUAL GUIDE</span><div><i /></div><span>2026</span></div>
           </div>
         </section>
 
